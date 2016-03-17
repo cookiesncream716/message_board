@@ -32,6 +32,8 @@ var CommentSchema = new mongoose.Schema({
 
 MessageSchema.path('message').required(true, 'Message cannot be blank');
 CommentSchema.path('comment').required(true, 'Comment cannot be blank');
+MessageSchema.path('name').required(true, 'Name cannot be blank');
+CommentSchema.path('name').required(true, 'Name cannot be blank');
 
 mongoose.model('Message', MessageSchema);
 mongoose.model('Comment', CommentSchema);
@@ -69,9 +71,12 @@ app.post('/comment/:id', function(req, res){
 		comment._message = message._id;
 		message.comments.push(comment);
 		comment.save(function(err){
-			message.save(function(err){
+			message.save(function(err2){
 				if(err){
 					console.log('Error');
+					Message.find({}).populate('comments').exec(function(err3, messages){
+						res.render('index', {messages: messages, errors: comment.errors})
+					})
 				} else{
 					res.redirect('/');
 				}
