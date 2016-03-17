@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>Message Board</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<h1>The Dojo Message Board</h1>
+			<div class="row">
+				<form class="col-md-4" id="form" action="/message" method="post">
+	  				<div class="form-group">
+	    				<label for="name">Name:</label>
+	    				<input type="text" class="form-control" name="name">
+	  				</div>
+	  				<div class="form-group">
+	    				<label for="weight">New Message:</label>
+	    				<textarea class="form-control" rows="5" name="message"></textarea>
+	  				</div>
+	  				<button type="submit" class="btn btn-info">Post Message</button>
+				</form>
+			</div>
+			<% if(typeof(errors) != 'undefined' ) { %>
+     			<% for (var x in errors) { %>
+      				<h3><%= errors[x].message %></h3>
+     			<% } %>
+ 			<% } %>
+			<% if(messages != undefined){ %>
+				<% for(var x in messages){ %>
+					<h4>Name: <%= messages[x].name %></h4>
+					<h4>Message: <%= messages[x].message %></h4>
+					<% if(messages[x].comments != undefined){ %>
+						<% for(var z=0; z<messages[x].comments.length; z++){ %>
+						<p>Name: <%= messages[x].comments[z].name %></p>
+						<p>Comment: <%= messages[x].comments[z].comment%></p>
+						<% } %>
+					<% } %>
+				<div class="row">
+					<form class="col-md-4" id="form" action="/comment/<%= messages[x].id %>" method="post">
+		  				<div class="form-group">
+		    				<label for="name">Name:</label>
+		    				<input type="text" class="form-control" name="name">
+		  				</div>
+		  				<div class="form-group">
+		    				<label for="weight">New Comment:</label>
+		    				<textarea class="form-control" rows="5" name="comment"></textarea>
+		  				</div>
+		  				<button type="submit" class="btn btn-info">Post Comment</button>
+					</form>
+				</div>
+				<% } %>
+			<% } %>
+			</div>
+	</body>
+</html>
